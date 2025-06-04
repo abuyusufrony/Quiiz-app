@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router';
+import Buildquizz from '../Buildquizz/Buildquizz';
 
 const Layout = () => {
     return (
@@ -6,7 +8,7 @@ const Layout = () => {
             <h2 className='text-3xl font-semibold font-sans '>Create Your Quizz For students </h2>
 
             <div>
-                <button className='btn  mt-11  min-h-full '>Create Quizz</button>
+                <Link to={'/'}><button className='btn  mt-11  min-h-full '>Create Quizz</button></Link>
             </div>
         </div>
     );

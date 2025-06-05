@@ -8,7 +8,7 @@ const Layout = () => {
             <h2 className='text-3xl font-semibold font-sans '>Create Your Quizz For students </h2>
 
             <div>
-                <Link to={'/'}><button className='btn  mt-11  min-h-full '>Create Quizz</button></Link>
+                <Link to={'/Buildquizz'}><button className='btn  mt-11  min-h-full '>Create Quizz</button></Link>
             </div>
         </div>
     );

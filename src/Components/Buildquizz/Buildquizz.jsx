@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Navigate } from 'react-router';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router';
 
 const Buildquizz = () => {
     const [quizTitle, setQuizTitle] = useState('');
@@ -9,6 +9,9 @@ const Buildquizz = () => {
     const [options, setOptions] = useState([]);
     const [correctOptionIndex, setCorrectOptionIndex] = useState(null);
     const [questions, setQuestions] = useState([]);
+    const [quizSaved, setQuizSaved] = useState(false);
+
+    const navigate = useNavigate();
 
     const handleAddOption = () => {
         if (optionInput.trim()) {
@@ -55,79 +58,61 @@ const Buildquizz = () => {
             questions,
         };
 
-        // Save quiz to localStorage
         localStorage.setItem('savedQuiz', JSON.stringify(quiz));
-
-        // Navigate to view page
-        Navigate('/view-quiz');
+        setQuizSaved(true);
     };
 
-    // ...rest of your code
-
     return (
-        <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-100 to-purple-200 p-6">
-            <div className="bg-white shadow-2xl rounded-3xl p-8 max-w-3xl w-full">
-                <h1 className="text-4xl font-extrabold text-center text-indigo-900 mb-10 tracking-wide">
-                    Quiz Builder
+        <div className="min-h-screen bg-gradient-to-br from-indigo-100 to-purple-200 p-4 sm:p-6 flex justify-center items-start overflow-auto">
+            <div className="bg-white shadow-2xl rounded-3xl p-5 sm:p-8 w-full max-w-3xl">
+                <h1 className="text-2xl sm:text-4xl font-extrabold text-center text-indigo-900 mb-8 sm:mb-10">
+                    📘 Quiz Builder
                 </h1>
 
-                {/* Quiz Title */}
-                <div className="mb-6">
-                    <label htmlFor="quizTitle" className="block text-indigo-700 font-semibold mb-2 text-lg">
-                        Quiz Title
-                    </label>
+                {/* Title */}
+                <div className="mb-5">
+                    <label className="block text-indigo-700 font-medium mb-1">Quiz Title</label>
                     <input
-                        id="quizTitle"
                         type="text"
                         value={quizTitle}
                         onChange={(e) => setQuizTitle(e.target.value)}
-                        className="w-full px-5 py-3 rounded-xl border border-indigo-300 focus:outline-none focus:ring-4 focus:ring-indigo-400 transition"
+                        className="w-full px-4 py-2 sm:py-3 rounded-lg border border-indigo-300 focus:outline-none focus:ring-2 focus:ring-indigo-400"
                         placeholder="Enter quiz title"
-                        autoComplete="off"
                     />
                 </div>
 
-                {/* Quiz Description */}
-                <div className="mb-8">
-                    <label htmlFor="quizDescription" className="block text-indigo-700 font-semibold mb-2 text-lg">
-                        Quiz Description
-                    </label>
+                {/* Description */}
+                <div className="mb-6">
+                    <label className="block text-indigo-700 font-medium mb-1">Quiz Description</label>
                     <textarea
-                        id="quizDescription"
                         value={quizDescription}
                         onChange={(e) => setQuizDescription(e.target.value)}
-                        className="w-full px-5 py-3 rounded-xl border border-indigo-300 focus:outline-none focus:ring-4 focus:ring-purple-400 transition"
-                        placeholder="Enter a short description of the quiz"
-                        rows={4}
-                        spellCheck={false}
+                        rows={3}
+                        className="w-full px-4 py-2 sm:py-3 rounded-lg border border-indigo-300 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                        placeholder="Short quiz description"
                     />
                 </div>
 
-                {/* Question Input */}
-                <div className="mb-5">
-                    <label htmlFor="questionInput" className="block text-indigo-700 font-semibold mb-2 text-lg">
-                        Enter a Question
-                    </label>
+                {/* Question */}
+                <div className="mb-4">
+                    <label className="block text-indigo-700 font-medium mb-1">New Question</label>
                     <input
-                        id="questionInput"
                         type="text"
                         value={question}
                         onChange={(e) => setQuestion(e.target.value)}
-                        className="w-full px-5 py-3 rounded-xl border border-indigo-300 focus:outline-none focus:ring-4 focus:ring-indigo-400 transition"
-                        placeholder="E.g. What is the capital of France?"
-                        autoComplete="off"
+                        className="w-full px-4 py-2 sm:py-3 rounded-lg border border-indigo-300 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                        placeholder="E.g., What is the capital of France?"
                     />
                 </div>
 
                 {/* Option Input */}
-                <div className="flex items-center gap-3 mb-6">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 mb-6">
                     <input
                         type="text"
                         value={optionInput}
                         onChange={(e) => setOptionInput(e.target.value)}
-                        className="flex-1 px-5 py-3 rounded-xl border border-indigo-300 focus:outline-none focus:ring-4 focus:ring-green-400 transition"
+                        className="flex-1 px-4 py-2 sm:py-3 rounded-lg border border-indigo-300 focus:outline-none focus:ring-2 focus:ring-green-400"
                         placeholder="Add an option"
-                        autoComplete="off"
                         onKeyDown={(e) => {
                             if (e.key === 'Enter') {
                                 e.preventDefault();
@@ -137,95 +122,86 @@ const Buildquizz = () => {
                     />
                     <button
                         onClick={handleAddOption}
-                        className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-xl font-semibold shadow-md transition transform hover:scale-105"
-                        aria-label="Add option"
+                        className="bg-green-600 hover:bg-green-700 text-white px-5 py-2 sm:py-3 rounded-lg font-semibold transition hover:scale-105"
                     >
                         + Option
                     </button>
                 </div>
 
-                {/* Options List with correct option selector */}
+                {/* Option List */}
                 {options.length > 0 && (
-                    <ul className="mb-7 space-y-3">
+                    <ul className="mb-6 space-y-2">
                         {options.map((opt, idx) => (
                             <li
                                 key={idx}
-                                className={`flex justify-between items-center px-5 py-3 rounded-xl cursor-pointer select-none transition-shadow ${correctOptionIndex === idx
-                                    ? 'bg-green-200 border border-green-500 shadow-lg'
+                                onClick={() => setCorrectOptionIndex(idx)}
+                                className={`px-4 py-3 rounded-xl cursor-pointer transition-shadow ${correctOptionIndex === idx
+                                    ? 'bg-green-100 border border-green-500 font-bold text-green-800'
                                     : 'bg-indigo-50 hover:bg-indigo-100'
                                     }`}
-                                onClick={() => setCorrectOptionIndex(idx)}
-                                role="button"
-                                tabIndex={0}
-                                onKeyDown={(e) => {
-                                    if (e.key === 'Enter' || e.key === ' ') {
-                                        setCorrectOptionIndex(idx);
-                                    }
-                                }}
                             >
-                                <span className="text-indigo-900 font-medium">{idx + 1}. {opt}</span>
-                                {correctOptionIndex === idx && (
-                                    <span className="text-green-700 font-bold flex items-center gap-1">
-                                        ✅ Correct
-                                    </span>
-                                )}
+                                {idx + 1}. {opt}
+                                {correctOptionIndex === idx && <span className="ml-2">✅</span>}
                             </li>
                         ))}
                     </ul>
                 )}
 
-                {/* Button to add question */}
+                {/* Add Question Button */}
                 <button
                     onClick={handleAddQuestion}
-                    className="w-full bg-indigo-700 hover:bg-indigo-800 text-white py-3 rounded-xl font-semibold shadow-lg transition transform hover:scale-[1.03]"
-                    aria-label="Add question"
+                    className="w-full bg-indigo-700 hover:bg-indigo-800 text-white py-3 rounded-xl font-semibold shadow-md transition hover:scale-[1.03]"
                 >
-                    Add Question
+                    ➕ Add Question
                 </button>
 
-                {/* Display added questions */}
+                {/* Display Questions */}
                 {questions.length > 0 && (
-                    <section className="mt-10">
-                        <h3 className="text-2xl font-bold mb-6 text-indigo-900 tracking-wide">Questions to be saved</h3>
-                        {questions.map((q, index) => (
-                            <article
-                                key={index}
-                                className="mb-6 p-6 bg-indigo-50 rounded-2xl shadow-md relative border border-indigo-200"
+                    <div className="mt-10 space-y-5">
+                        <h3 className="text-xl font-semibold text-indigo-800">Questions Added</h3>
+                        {questions.map((q, i) => (
+                            <div
+                                key={i}
+                                className="relative bg-indigo-50 border border-indigo-200 rounded-2xl p-5"
                             >
                                 <button
-                                    onClick={() => handleDeleteQuestion(index)}
-                                    className="absolute top-4 right-4 text-red-600 hover:text-red-800 text-xl transition"
-                                    aria-label={`Delete question ${index + 1}`}
+                                    onClick={() => handleDeleteQuestion(i)}
+                                    className="absolute top-2 right-2 text-red-600 hover:text-red-800 text-lg"
                                 >
                                     🗑
                                 </button>
-                                <p className="font-semibold text-indigo-900 mb-3 text-lg">
-                                    {index + 1}. {q.question}
+                                <p className="font-semibold mb-2 text-indigo-900">
+                                    {i + 1}. {q.question}
                                 </p>
-                                <ul className="list-disc list-inside text-indigo-800 space-y-1">
-                                    {q.options.map((opt, i) => (
-                                        <li
-                                            key={i}
-                                            className={`${opt === q.correctAnswer ? 'font-bold text-green-700' : ''
-                                                }`}
-                                        >
+                                <ul className="space-y-1 text-indigo-800">
+                                    {q.options.map((opt, j) => (
+                                        <li key={j}>
                                             {opt} {opt === q.correctAnswer && <span>✅</span>}
                                         </li>
                                     ))}
                                 </ul>
-                            </article>
+                            </div>
                         ))}
-                    </section>
+                    </div>
                 )}
 
-                {/* Save entire quiz */}
-                <button
-                    onClick={handleSaveQuiz}
-                    className="mt-8 w-full bg-purple-700 hover:bg-purple-800 text-white py-3 rounded-xl font-semibold shadow-lg transition transform hover:scale-[1.03]"
-                    aria-label="Save quiz"
-                >
-                    Save Quiz
-                </button>
+                {/* Save / View Buttons */}
+                {!quizSaved ? (
+                    <button
+                        onClick={handleSaveQuiz}
+                        className="mt-8 w-full bg-purple-700 hover:bg-purple-800 text-white py-3 rounded-xl font-semibold shadow-md transition hover:scale-[1.03]"
+                    >
+                        💾 Save Quiz
+                    </button>
+                ) : (
+                    <Link to="/ViewQuiz">
+                        <button
+                            className="mt-8 w-full bg-green-600 hover:bg-green-700 text-white py-3 rounded-xl font-semibold shadow-md transition hover:scale-[1.03]"
+                        >
+                            ✅ Quiz Saved! View Quiz
+                        </button>
+                    </Link>
+                )}
             </div>
         </div>
     );

@@ -24,8 +24,20 @@ const ViewQuiz = () => {
 
     if (!quiz) {
         return (
-            <div className="text-center text-gray-500 mt-20 text-lg">
-                ⚠️ No quiz found.
+            <div className="flex flex-col items-center justify-center h-[60vh] text-center px-4">
+                <div className="bg-white shadow-lg rounded-3xl p-8 border border-gray-200 max-w-md w-full">
+                    <div className="text-4xl mb-4">⚠️</div>
+                    <h2 className="text-2xl font-semibold text-gray-800 mb-2">No Quiz Found</h2>
+                    <p className="text-gray-500 mb-6">
+                        You haven’t created any quiz yet. Click below to build your first quiz.
+                    </p>
+                    <Link
+                        to="/Buildquizz"
+                        className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium py-3 px-6 rounded-full shadow transition duration-300"
+                    >
+                        ➕ Create Quiz
+                    </Link>
+                </div>
             </div>
         );
     }

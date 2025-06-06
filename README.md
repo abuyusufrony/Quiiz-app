@@ -50,5 +50,5 @@ npm install
 
 ## 👤 Author
 
-- GitHub: [@abuyusufrony)](https://github.com/abuyusufrony)
+- GitHub: [abuyusufrony](https://github.com/abuyusufrony)
 

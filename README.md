@@ -47,4 +47,8 @@ cd quiz-builder
 # 3. Install dependencies
 npm install
 
-# 4. St
+
+## 👤 Author
+
+- GitHub: [@abuyusufrony)](https://github.com/abuyusufrony)
+

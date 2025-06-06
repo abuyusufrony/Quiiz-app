@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Navigate } from 'react-router';
 
 const Buildquizz = () => {
     const [quizTitle, setQuizTitle] = useState('');
@@ -54,14 +55,14 @@ const Buildquizz = () => {
             questions,
         };
 
-        // Save to localStorage
+        // Save quiz to localStorage
         localStorage.setItem('savedQuiz', JSON.stringify(quiz));
 
-        alert('Quiz saved! Redirecting to view page...');
-
-        // Navigate to the view page (using React Router)
+        // Navigate to view page
+        Navigate('/view-quiz');
     };
 
+    // ...rest of your code
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-indigo-100 to-purple-200 p-6">
